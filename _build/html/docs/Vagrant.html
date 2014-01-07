@@ -81,9 +81,9 @@ These images can be downloaded automatically as we shall see.</p>
 <p>We can demonstrate this tool by installing <a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> on a test system.</p>
 <div class="section" id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> needs a <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> system to manage. Currently the tool works with
-<a class="reference external" href="https://www.virtualbox.org/">VirtualBox</a>, and there is a commercial version that works on <a class="reference external" href="http://www.vmware.com/">VMware</a>. We will
-use the free version.</p>
+<p><a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> needs a <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> system to manage. Currently the tool works best
+with <a class="reference external" href="https://www.virtualbox.org/">VirtualBox</a>, and there is a commercial version that works on <a class="reference external" href="http://www.vmware.com/">VMware</a>. We
+will use the free version.</p>
 <div class="section" id="install-virtualbox">
 <h4>Install VirtualBox<a class="headerlink" href="#install-virtualbox" title="Permalink to this headline">¶</a></h4>
 <p>Download the Windows installer for <a class="reference external" href="https://www.virtualbox.org/">VirtualBox</a>:</p>
@@ -121,7 +121,7 @@ vagrant up
 <p>When this sequence completes, you will have a running Ubuntu 12.04 32-bit
 server running on your machine. There will be nothing indicating that this
 machine is running, but it is. You can confirm this by running this command:</p>
-<p>On systems with an SSH client installed (like lInux and Mac), you can access
+<p>On systems with an SSH client installed (like Linux and Mac), you can access
 the machine using this:</p>
 <div class="highlight-text"><div class="highlight"><pre>vagrant ssh
 </pre></div>
@@ -140,7 +140,8 @@ executables that can be dropped into any directory on your system PATH.</p>
 </div></blockquote>
 <p>Vagrant uses an SSH connection for communication. We need to set up the private
 key on the host machine so <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Putty</a> can access the <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a>. To do this, we
-need to convert the key created by Vagrant into a form acceptable by Putty.</p>
+need to convert the key created by Vagrant into a form that will be accepted
+by Putty.</p>
 <p>Start up the <strong class="program">puttygen`</strong> program and select <em class="menuselection">Load</em> to
 load the <tt class="docutils literal"><span class="pre">insecure_privatekey</span></tt> file. This file can be found in your home
 directory (Something like <tt class="docutils literal"><span class="pre">C:\Users\username\.vagrant.d\isecure_private_key</span></tt>)
@@ -149,9 +150,10 @@ the open dialog window that opens.</p>
 <img alt="../_images/VagrantKey1.png" class="align-center" src="../_images/VagrantKey1.png" />
 <p>Once the file has been loaded, you will see this:</p>
 <img alt="../_images/VagrantKey2.png" class="align-center" src="../_images/VagrantKey2.png" />
-<p>Save the file with no passphrase</p>
+<p>Save the file with no pass-phrase</p>
 <img alt="../_images/VagrantKey3.png" class="align-center" src="../_images/VagrantKey3.png" />
-<p>I use <tt class="docutils literal"><span class="pre">vagrant.ppk</span></tt> for the file name.  I keep this file in the same directory where the original insecure key was found.</p>
+<p>I use <tt class="docutils literal"><span class="pre">vagrant.ppk</span></tt> for the file name.  I keep this file in the same
+directory where the original insecure key was found.</p>
 <div class="section" id="start-putty">
 <h4>Start Putty<a class="headerlink" href="#start-putty" title="Permalink to this headline">¶</a></h4>
 <p>Now run putty.</p>
@@ -187,7 +189,15 @@ are now working in the default user&#8217;s home directory.</p>
 </div>
 <p>We can see the host directory by doing this:</p>
 <img alt="../_images/putty7.png" class="align-center" src="../_images/putty7.png" />
-<p>Here, we see that the <tt class="docutils literal"><span class="pre">/vagrant</span></tt> directory has been mapped to the host directory where we ran the vagrant command. This lets us easily move files between the guest and the host, which is pretty handy</p>
+<p>Here, we see that the <tt class="docutils literal"><span class="pre">/vagrant</span></tt> directory has been mapped to the host
+directory where we ran the vagrant command. This lets us easily move files
+between the guest and the host, which is pretty handy.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">There is one serious problem with simple moving files between PC and Linux
+this way. The line-ending differences between the two systems will not be
+handled, so it is up to you to deal with this!</p>
+</div>
 </div>
 </div>
 </div>
@@ -214,7 +224,7 @@ demonstrate how easy it can be to set up a new system, especially one inside a
 a machine. This tool implements something called &#8220;configuration as software&#8221;.
 We are going to describe how the system should look, and let <a class="reference external" href="http://puppetlabs.com/">Puppet</a> make that
 happen. We do not tell Puppet how to do any of this configuration.</p>
-<p>First, create this directory structure (omit the .pp files for now):</p>
+<p>First, create this directory structure (omit the other files for now):</p>
 <div class="highlight-text"><div class="highlight"><pre>puppet
 |
 +- manifests
@@ -224,30 +234,22 @@ happen. We do not tell Puppet how to do any of this configuration.</p>
 +- modules
     |
     +-vim
-    |   |
-    |   +-manifests
-    |       |
-    |       +-init.pp
-    |
-    +-build
-    |   |
-    |   +-manifests
-    |       |
-    |       +-init.pp
-    |
-    +-nasm
         |
         +-manifests
+        |   |
+        |   +-init.pp
+        |
+        +-templates
             |
-            +-init.pp
+            +-vimrc.erb
 </pre></div>
 </div>
 </div>
 <div class="section" id="create-a-new-vagrantfile">
 <h3>Create a new VagrantFile<a class="headerlink" href="#create-a-new-vagrantfile" title="Permalink to this headline">¶</a></h3>
-<p>The default <tt class="docutils literal"><span class="pre">VagrantFIle</span></tt> created by the <a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> tool is full of comments
+<p>The default <tt class="docutils literal"><span class="pre">VagrantFile</span></tt> created by the <a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> tool is full of comments
 describing the various entries. I like to prune this to just the essentials.
-Here is the file needed to configure this machine for mu COSC2425 class:</p>
+Here is the file needed to configure this machine for my COSC2425 class:</p>
 <div class="highlight-python"><pre># -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -266,10 +268,19 @@ end
 </pre>
 </div>
 <p>Here is the initial <tt class="docutils literal"><span class="pre">site.pp</span></tt> file that controls the entire setup:</p>
-<div class="highlight-python"><pre>include vim
+<div class="highlight-python"><pre>file { "motd":
+    path =&gt; "/etc/motd",
+    content =&gt; "Welcome to VMdemo",
+}
+
+include vim
+include build
+include nasm
 </pre>
 </div>
-<p>This file will load additional &#8220;modules&#8221; which describe the setup for a single package. As an example, here is the file that installs <strong class="program">vim</strong> on the system:</p>
+<p>This file will load additional &#8220;modules&#8221; which describe the setup for a single
+package. As an example, here is the file that installs <strong class="program">vim</strong> on the
+system:</p>
 <div class="highlight-python"><pre>class vim {
 
     package { "vim":
@@ -293,7 +304,32 @@ set expandtab
 set nobackup
 </pre>
 </div>
+<p>Once the new <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> has been provisioned, you can start it up and verify that the needed tools are all in place:</p>
+<img alt="../_images/putty8.png" class="align-center" src="../_images/putty8.png" />
+<p>Here, I checked that a major program from each package I installed is present
+and working. All I did to set this machine up was run <tt class="docutils literal"><span class="pre">vagrant</span> <span class="pre">provision</span></tt>
+from the command line while the machine was running. This is very nice!</p>
 </div>
+</div>
+<div class="section" id="more-on-puppet">
+<h2>More on Puppet<a class="headerlink" href="#more-on-puppet" title="Permalink to this headline">¶</a></h2>
+<p>There are many resources available to learn more about puppet. The tool has a
+commercial version that is being used by many companies to manage thousands of
+systems. There are many modules available for downloading that will install
+just about any tool you can think of. Here is a link to the main site hosting
+these modules:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://forge.puppetlabs.com/">Puppet Forge</a></li>
+</ul>
+</div></blockquote>
+<p>The complete set of files used for this demo, including the <a class="reference external" href="http://www.vagrantup.com/">Vagrant</a>
+demonstration files can be found on my <a class="reference external" href="https://github.com/">GitHub</a> account:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Roie Black&#8217;s GitHub &lt;<a class="reference external" href="https://github.com/rblack42/VMdemo">https://github.com/rblack42/VMdemo</a>&gt;`_</li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 
@@ -329,6 +365,7 @@ set nobackup
 <li><a class="reference internal" href="#create-a-new-vagrantfile">Create a new VagrantFile</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#more-on-puppet">More on Puppet</a></li>
 </ul>
 </li>
 </ul>

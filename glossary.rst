@@ -9,9 +9,15 @@ Glossary
     :sorted:
 
 
-    VM
-    Virtual Machine
-    Virtual Machines
+    cloud
+        A term that refers to machines available on the Internet. These
+        machines may be servers running major applications or hosting web
+        sites, or servers providing storage for files on an off-site system.
+
+
+    VM 
+    Virtual Machine 
+    Virtual Machines 
         A software program designed to emulate a computer system well enough to
         run programs designed for that system.
 

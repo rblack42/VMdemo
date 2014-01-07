@@ -29,9 +29,9 @@ We can demonstrate this tool by installing Vagrant_ on a test system.
 Prerequisites
 =============
 
-Vagrant_ needs a :term:`VM` system to manage. Currently the tool works with
-VirtualBox_, and there is a commercial version that works on VMware_. We will
-use the free version.
+Vagrant_ needs a :term:`VM` system to manage. Currently the tool works best
+with VirtualBox_, and there is a commercial version that works on VMware_. We
+will use the free version.
 
 Install VirtualBox
 ------------------
@@ -82,7 +82,7 @@ machine is running, but it is. You can confirm this by running this command:
     suspend the virtual machine. In either case, to restart it again,
     simply run `vagrant up`.   
 
-On systems with an SSH client installed (like lInux and Mac), you can access
+On systems with an SSH client installed (like Linux and Mac), you can access
 the machine using this:
 
 ..  code-block:: text
@@ -103,7 +103,8 @@ executables that can be dropped into any directory on your system PATH.
 
 Vagrant uses an SSH connection for communication. We need to set up the private
 key on the host machine so Putty_ can access the :term:`VM`. To do this, we
-need to convert the key created by Vagrant into a form acceptable by Putty.
+need to convert the key created by Vagrant into a form that will be accepted
+by Putty.
 
 Start up the :program:`puttygen`` program and select :menuselection:`Load` to
 load the ``insecure_privatekey`` file. This file can be found in your home
@@ -119,12 +120,13 @@ Once the file has been loaded, you will see this:
 ..  image:: VagrantKey2.png
     :align: center
 
-Save the file with no passphrase
+Save the file with no pass-phrase
 
 ..  image:: VagrantKey3.png
     :align: center
 
-I use ``vagrant.ppk`` for the file name.  I keep this file in the same directory where the original insecure key was found.
+I use ``vagrant.ppk`` for the file name.  I keep this file in the same
+directory where the original insecure key was found.
 
 Start Putty
 -----------
@@ -190,7 +192,13 @@ We can see the host directory by doing this:
 
 Here, we see that the ``/vagrant`` directory has been mapped to the host
 directory where we ran the vagrant command. This lets us easily move files
-between the guest and the host, which is pretty handy
+between the guest and the host, which is pretty handy.
+
+..  warning::
+
+    There is one serious problem with simple moving files between PC and Linux
+    this way. The line-ending differences between the two systems will not be
+    handled, so it is up to you to deal with this!
 
 Provisioning the guest
 **********************
@@ -246,9 +254,9 @@ First, create this directory structure (omit the other files for now):
 Create a new VagrantFile
 ========================
 
-The default ``VagrantFIle`` created by the Vagrant_ tool is full of comments
+The default ``VagrantFile`` created by the Vagrant_ tool is full of comments
 describing the various entries. I like to prune this to just the essentials.
-Here is the file needed to configure this machine for mu COSC2425 class:
+Here is the file needed to configure this machine for my COSC2425 class:
 
 ..  literalinclude::    /_code/VMtest/VagrantFile
 
@@ -256,8 +264,9 @@ Here is the initial ``site.pp`` file that controls the entire setup:
 
 ..  literalinclude::    /_code/VMtest/puppet/manifests/site.pp
 
-This file will load additional "modules" which describe the setup for a single package. As an example, here is the file that installs :program:`vim` on the system:
-
+This file will load additional "modules" which describe the setup for a single
+package. As an example, here is the file that installs :program:`vim` on the
+system:
 
 ..  literalinclude::    /_code/VMtest/puppet/modules/vim/manifests/init.pp
 
@@ -267,3 +276,29 @@ directory as ``.vimrc``. Here is the template, located in
 ``puppet/modules/vim/templates/vimrc.erb``
 
 ..  literalinclude::    /_code/VMtest/puppet/modules/vim/templates/vimrc.erb
+
+Once the new :term:`VM` has been provisioned, you can start it up and verify that the needed tools are all in place:
+
+..  image:: putty8.png
+    :align: center
+
+Here, I checked that a major program from each package I installed is present
+and working. All I did to set this machine up was run ``vagrant provision``
+from the command line while the machine was running. This is very nice!
+
+More on Puppet
+**************
+
+There are many resources available to learn more about puppet. The tool has a
+commercial version that is being used by many companies to manage thousands of
+systems. There are many modules available for downloading that will install
+just about any tool you can think of. Here is a link to the main site hosting
+these modules:
+
+    * `Puppet Forge <https://forge.puppetlabs.com/>`_
+
+The complete set of files used for this demo, including the Vagrant_
+demonstration files can be found on my GitHub_ account:
+
+    * Roie Black's GitHub <https://github.com/rblack42/VMdemo>`_
+

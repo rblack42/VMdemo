@@ -17,3 +17,5 @@
 ..  _Vagrant:       http://www.vagrantup.com/
 ..  _Puppet:        http://puppetlabs.com/
 ..  _Putty:         http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
+..  _GitHub:        https://github.com/
+..  _Xen:           http://www.xenproject.org/

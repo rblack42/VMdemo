@@ -89,7 +89,7 @@ They also need a fair amount of memory and a big hard disk:
 
     * Lots of memory (2GB or more per running machine)
 
-    * Reasonable hard disk (10-50GB or more per running machine)
+    * Reasonable hard disk (10-50GB or more per machine)
 
 ..  note::
 
@@ -111,7 +111,7 @@ All of these products emulate standard PC hardware and run on PC systems
 
     * VMware_ 
       
-        * Workstation_ on PC systems
+        * Workstation_ on Linux and PC systems
         * Player_ on PC systems
         * Fusion_ on Mac systems
 
@@ -140,12 +140,12 @@ Configuring a VM
 ****************
 
 When you set up a :term:`VM` it is something like wandering the aisles at Fry's
-and picking out comonents you want to add. Most :term:`VM` software will let
-you access the physical hardware on the host. This includes things like USB
-devices, and CD/DVD hardware. Do not add any hardware you do not need!
+and picking out components you want to add. Most :term:`VM` software will let
+you access physical hardware found on the host. This includes things like USB
+devices, and CD/DVD devices. Do not add any hardware you do not need!
 
 All disk drives end up living in a file stored on the host. This file can be
-set up to grow as more data is added to the guest system. This file can get
+set up to grow as more data is added to the guest system. The disk file can get
 big!
 
 ..  note::
@@ -160,12 +160,12 @@ A typical setup that I use for class work looks like this:
         * 512MB - 1GB for Linux
         * 2GB for Windows (max depends on available memory on host)
     * Floppy - really?
+    * Audio - not needed
     * Hard disk - depends on the OS
         * 8-30GB is enough for OS and user data
-    * CD/DVD - usually not needed
+    * CD/DVD - usually not needed (you can mount an ``iso`` file to install an OS)
     * Video - Simple video is fine for server systems
-        * HIgher performance video is available for GUI systems
-
+        * Higher performance video is available for GUI systems
     * Network Adapter
         * Bridged - your VM will get an IP address from a DHCP server (router)
         * Host only - only the host can access the VM (no Internet)
@@ -182,7 +182,7 @@ I use a virtual machine in many situations:
     * Learning new applications/Languages
     * Managing software development process
     * learning how to manage remote machines
-        * The setup I use looks/feels exactly like my Rackspace_ VPS_ setup
+        * The setup I use looks/feels exactly like my Rackspace_ :term:`VPS` setup
 
 In all of these situations, a new machine can be created and used as needed.
 When you are finished with the project, you can delete the entire machine
@@ -190,16 +190,27 @@ When you are finished with the project, you can delete the entire machine
 
 Planning on using VMs in class?
 *******************************
+..  note::
+
+    The `Computer Studies Advisory Committee` suggested that all of our
+    students should get experience using :term:`virtual machines` while in
+    school. I have been using them in my COSC2425 class for many years, and
+    have used one in other classes as needed.
+
+    I use a server version of Linux to simulate working on a server located in
+    the :term:`cloud`. You can use a GUI version, but I have not chosen to do
+    that.
 
 There are a few things you need to consider:
 
 Creating the image
 ==================
 
-I build a standard image (usually a server version of Ubuntu Linux) and set up
-a user account for me, and for the lab techs so they can access the machine if
-needed. I install all needed software on the image, then that image is included
-in the master image used to set up lab machines at the start of each term.
+I build a standard image (usually a server version of Ubuntu Linux 12.04LTS)
+and set up a user account for me, and for the lab techs so they can access the
+machine if needed. I install all needed software on the image, then that image
+is included in the master image used to set up lab machines at the start of
+each term.
 
 I create one student account and set up a password that all students will use
 to access the machine. (See below)
@@ -210,12 +221,20 @@ Licensing
 Setting up a VM image leads to license issues:
 
     * Linux guest - no problems here
-    * Windows guest - the image may be copied, breaking the license
+    * Windows guest - the image files can be copied, breaking the license
+
+Where will the :term:`VM` files live?
+=====================================
+
+It would be nice to be able to store the files on the student H drive, but
+these files are big. Running in a class would result in a lot of network
+traffic. For that reason, we store the files on the physical machines in the
+labs. Not ideal, but it can work (see below).
 
 Where will student data live?
 =============================
 
-In some setups, student data ends up in the image file!
+In normal use, student data can end up being stored in the image file!
 
     * This locks the student to a particular machine
 
@@ -237,4 +256,24 @@ and the class image available.
 
 Check with the lab techs to see how this is set up
 
+The future
+**********
 
+:term:`Virtual machines` are so common today, that many developers routinely
+work inside one, configured for the project they are working on.
+
+Some companies have set up procedures for rapidly setting up new workers with
+the tools they need to become a member of a development team. We will look at
+one new tool that makes this easy: Vagrant_ 
+
+Using a :term:`VM` can eliminate many of the problems we face when installing
+software for multiple classes on one machine. However, in our current lab
+setup, many of these ideas need to be studied to minimize the impact this would
+have on security and network traffic. 
+
+Re-imaging every term could go away in a world where each class has exactly the
+setup needed for that class isolated in a custom :term:`VM` image.
+
+Anyone interested in exploring this idea is welcome to contact me to help
+develop this idea. It is not new, there are schools out there doing exactly
+this using advanced tools like VMware vSphere! 

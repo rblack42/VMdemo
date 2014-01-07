@@ -149,7 +149,7 @@ hardware support to improve performance:</p>
 <blockquote>
 <div><ul class="simple">
 <li>Lots of memory (2GB or more per running machine)</li>
-<li>Reasonable hard disk (10-50GB or more per running machine)</li>
+<li>Reasonable hard disk (10-50GB or more per machine)</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
@@ -173,7 +173,7 @@ the required extensions.</p>
 <li><p class="first"><a class="reference external" href="http://www.vmware.com/">VMware</a></p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference external" href="http://www.vmware.com/products/workstation/">Workstation</a> on PC systems</li>
+<li><a class="reference external" href="http://www.vmware.com/products/workstation/">Workstation</a> on Linux and PC systems</li>
 <li><a class="reference external" href="https://my.vmware.com/web/vmware/free#desktop_end_user_computing/vmware_player/6_0">Player</a> on PC systems</li>
 <li><a class="reference external" href="https://www.vmware.com/products/fusion/">Fusion</a> on Mac systems</li>
 </ul>
@@ -188,7 +188,7 @@ as well.</p>
 <ul class="last simple">
 <li><a class="reference external" href="https://www.virtualbox.org/">VirtualBox</a> - free for all platforms</li>
 <li><a class="reference external" href="http://www.parallels.com/">Parallels</a> on Mac systems</li>
-<li><a href="#id2"><span class="problematic" id="id3">XEN_</span></a> - for Linux systems</li>
+<li><a class="reference external" href="http://www.xenproject.org/">XEN</a> - for Linux systems</li>
 <li><a class="reference external" href="http://www.microsoft.com/en-us/download/details.aspx?id=4580">VirtualPC</a> - limited to running MS products</li>
 </ul>
 </div>
@@ -209,11 +209,11 @@ installed. There are products that can run on systems with no Operating system.<
 <div class="section" id="configuring-a-vm">
 <h2>Configuring a VM<a class="headerlink" href="#configuring-a-vm" title="Permalink to this headline">¶</a></h2>
 <p>When you set up a <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> it is something like wandering the aisles at Fry&#8217;s
-and picking out comonents you want to add. Most <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> software will let
-you access the physical hardware on the host. This includes things like USB
-devices, and CD/DVD hardware. Do not add any hardware you do not need!</p>
+and picking out components you want to add. Most <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> software will let
+you access physical hardware found on the host. This includes things like USB
+devices, and CD/DVD devices. Do not add any hardware you do not need!</p>
 <p>All disk drives end up living in a file stored on the host. This file can be
-set up to grow as more data is added to the guest system. This file can get
+set up to grow as more data is added to the guest system. The disk file can get
 big!</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -236,6 +236,8 @@ changes or read the files. A bit of googling should turn them up if needed.</p>
 </li>
 <li><p class="first">Floppy - really?</p>
 </li>
+<li><p class="first">Audio - not needed</p>
+</li>
 <li><dl class="first docutils">
 <dt>Hard disk - depends on the OS</dt>
 <dd><ul class="first last simple">
@@ -244,12 +246,12 @@ changes or read the files. A bit of googling should turn them up if needed.</p>
 </dd>
 </dl>
 </li>
-<li><p class="first">CD/DVD - usually not needed</p>
+<li><p class="first">CD/DVD - usually not needed (you can mount an <tt class="docutils literal"><span class="pre">iso</span></tt> file to install an OS)</p>
 </li>
 <li><dl class="first docutils">
 <dt>Video - Simple video is fine for server systems</dt>
 <dd><ul class="first last simple">
-<li>HIgher performance video is available for GUI systems</li>
+<li>Higher performance video is available for GUI systems</li>
 </ul>
 </dd>
 </dl>
@@ -285,7 +287,7 @@ changes or read the files. A bit of googling should turn them up if needed.</p>
 <li><dl class="first docutils">
 <dt>learning how to manage remote machines</dt>
 <dd><ul class="first last simple">
-<li>The setup I use looks/feels exactly like my <a class="reference external" href="http://www.rackspace.com/">Rackspace</a> <a href="#id4"><span class="problematic" id="id5">VPS_</span></a> setup</li>
+<li>The setup I use looks/feels exactly like my <a class="reference external" href="http://www.rackspace.com/">Rackspace</a> <a class="reference internal" href="../glossary.html#term-vps"><em class="xref std std-term">VPS</em></a> setup</li>
 </ul>
 </dd>
 </dl>
@@ -298,13 +300,24 @@ When you are finished with the project, you can delete the entire machine
 </div>
 <div class="section" id="planning-on-using-vms-in-class">
 <h2>Planning on using VMs in class?<a class="headerlink" href="#planning-on-using-vms-in-class" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The <cite>Computer Studies Advisory Committee</cite> suggested that all of our
+students should get experience using <a class="reference internal" href="../glossary.html#term-virtual-machines"><em class="xref std std-term">virtual machines</em></a> while in
+school. I have been using them in my COSC2425 class for many years, and
+have used one in other classes as needed.</p>
+<p class="last">I use a server version of Linux to simulate working on a server located in
+the <a class="reference internal" href="../glossary.html#term-cloud"><em class="xref std std-term">cloud</em></a>. You can use a GUI version, but I have not chosen to do
+that.</p>
+</div>
 <p>There are a few things you need to consider:</p>
 <div class="section" id="creating-the-image">
 <h3>Creating the image<a class="headerlink" href="#creating-the-image" title="Permalink to this headline">¶</a></h3>
-<p>I build a standard image (usually a server version of Ubuntu Linux) and set up
-a user account for me, and for the lab techs so they can access the machine if
-needed. I install all needed software on the image, then that image is included
-in the master image used to set up lab machines at the start of each term.</p>
+<p>I build a standard image (usually a server version of Ubuntu Linux 12.04LTS)
+and set up a user account for me, and for the lab techs so they can access the
+machine if needed. I install all needed software on the image, then that image
+is included in the master image used to set up lab machines at the start of
+each term.</p>
 <p>I create one student account and set up a password that all students will use
 to access the machine. (See below)</p>
 </div>
@@ -314,13 +327,20 @@ to access the machine. (See below)</p>
 <blockquote>
 <div><ul class="simple">
 <li>Linux guest - no problems here</li>
-<li>Windows guest - the image may be copied, breaking the license</li>
+<li>Windows guest - the image files can be copied, breaking the license</li>
 </ul>
 </div></blockquote>
 </div>
+<div class="section" id="where-will-the-vm-files-live">
+<h3>Where will the <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> files live?<a class="headerlink" href="#where-will-the-vm-files-live" title="Permalink to this headline">¶</a></h3>
+<p>It would be nice to be able to store the files on the student H drive, but
+these files are big. Running in a class would result in a lot of network
+traffic. For that reason, we store the files on the physical machines in the
+labs. Not ideal, but it can work (see below).</p>
+</div>
 <div class="section" id="where-will-student-data-live">
 <h3>Where will student data live?<a class="headerlink" href="#where-will-student-data-live" title="Permalink to this headline">¶</a></h3>
-<p>In some setups, student data ends up in the image file!</p>
+<p>In normal use, student data can end up being stored in the image file!</p>
 <blockquote>
 <div><ul class="simple">
 <li>This locks the student to a particular machine</li>
@@ -344,6 +364,23 @@ the guest</li>
 <p>Check with the lab techs to see how this is set up</p>
 </div>
 </div>
+</div>
+<div class="section" id="the-future">
+<h2>The future<a class="headerlink" href="#the-future" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../glossary.html#term-virtual-machines"><em class="xref std std-term">Virtual machines</em></a> are so common today, that many developers routinely
+work inside one, configured for the project they are working on.</p>
+<p>Some companies have set up procedures for rapidly setting up new workers with
+the tools they need to become a member of a development team. We will look at
+one new tool that makes this easy: <a class="reference external" href="http://www.vagrantup.com/">Vagrant</a></p>
+<p>Using a <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> can eliminate many of the problems we face when installing
+software for multiple classes on one machine. However, in our current lab
+setup, many of these ideas need to be studied to minimize the impact this would
+have on security and network traffic.</p>
+<p>Re-imaging every term could go away in a world where each class has exactly the
+setup needed for that class isolated in a custom <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> image.</p>
+<p>Anyone interested in exploring this idea is welcome to contact me to help
+develop this idea. It is not new, there are schools out there doing exactly
+this using advanced tools like VMware vSphere!</p>
 </div>
 </div>
 
@@ -374,12 +411,14 @@ the guest</li>
 <li><a class="reference internal" href="#planning-on-using-vms-in-class">Planning on using VMs in class?</a><ul>
 <li><a class="reference internal" href="#creating-the-image">Creating the image</a></li>
 <li><a class="reference internal" href="#licensing">Licensing</a></li>
+<li><a class="reference internal" href="#where-will-the-vm-files-live">Where will the <tt class="docutils literal"><span class="pre">VM</span></tt> files live?</a></li>
 <li><a class="reference internal" href="#where-will-student-data-live">Where will student data live?</a><ul>
 <li><a class="reference internal" href="#we-have-a-solution">We have a solution</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#the-future">The future</a></li>
 </ul>
 </li>
 </ul>
@@ -439,7 +478,7 @@ the guest</li>
 
     <div class="footer">
         &copy; Copyright 2014, Roie R. Black.
-      Last updated on Jan 06, 2014.
+      Last updated on Jan 07, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.
     </div>
     <!-- cloud_sptheme 1.4 -->
