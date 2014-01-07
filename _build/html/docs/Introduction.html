@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Virtual Machine Basics &mdash; Introduction to Virtual Machines</title>
+    
+    <link rel="stylesheet" href="../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../_static/cloud.js"></script>
+    <link rel="top" title="Introduction to Virtual Machines" href="../index.html" />
+    <link rel="next" title="Software development with Vagrant" href="Vagrant.html" />
+    <link rel="prev" title="Introduction to Virtual Machines" href="../index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Vagrant.html" title="Software development with Vagrant"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Introduction to Virtual Machines"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">VMdemo</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="virtual-machine-basics">
+<h1>Virtual Machine Basics<a class="headerlink" href="#virtual-machine-basics" title="Permalink to this headline">¶</a></h1>
+<p>A <a class="reference internal" href="../glossary.html#term-virtual-machine"><em class="xref std std-term">virtual machine</em></a> is a computer program that emulates another computer
+system well enough to run programs, including operating systems, exactly as
+they would run on that computer.</p>
+<p><a class="reference internal" href="../glossary.html#term-virtual-machines"><em class="xref std std-term">Virtual Machines</em></a> generally fall into two major subcategories:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> systems that emulate the host machine they run on</li>
+<li><a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> systems that emulate other kinds of computer systems</li>
+</ul>
+</div></blockquote>
+<p>Historically, the concept of a virtual machine is very old, dating back to
+early experiments that tried to isolate multiple programs running on a common
+machine so they did not interfere with each other. (IBM&#8217;s early time-sharing
+ideas are an example).</p>
+<p>To do this job right, the <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> program has to be able to run every
+hardware instruction found on the emulated machine, and do so in a way that
+does not interfere with the machine running the <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> program. Obviously
+this has one serious disadvantage:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> systems can be slow!</li>
+</ul>
+</div></blockquote>
+<p>However, in real-world use with modern equipment, these are the numbers you
+might see:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Ideal Virtual Machine performance:</p>
+<blockquote>
+<div><ul class="simple">
+<li>CPU: 96-97% of host</li>
+<li>Network: 70-90% of host</li>
+<li>Disk: 40-70% of host</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>Given the speed of today&#8217;s systems, using a <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> in many situations will
+not result in noticeable speed issues. Obviously, you might need to tune the
+<a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> setup for each application you want to run.</p>
+<p>Many companies like <a class="reference external" href="http://www.rackspace.com/">Rackspace</a> use high-performance hardware and set up about
+four to six <a class="reference internal" href="../glossary.html#term-virtual-private-server"><em class="xref std std-term">virtual private server</em></a> systems per physical machine!</p>
+<div class="section" id="the-emulated-computer">
+<h2>The emulated computer<a class="headerlink" href="#the-emulated-computer" title="Permalink to this headline">¶</a></h2>
+<p>The most common kinds of <a class="reference internal" href="../glossary.html#term-virtual-machine"><em class="xref std std-term">virtual machine</em></a> programs emulate a typical PC
+platform that feels like a real computer. You can even decide exactly what kind
+of hardware you want the emulated system to have:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Processor(s)</li>
+<li>Memory</li>
+<li>Hard disk drive(s)</li>
+<li>CD/DVD drive(s)</li>
+<li>Network adapters</li>
+<li>Video interface</li>
+<li>USB support</li>
+</ul>
+</div></blockquote>
+<div class="section" id="terminology">
+<h3>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>The machine running the <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> software is called the <a class="reference internal" href="../glossary.html#term-host"><em class="xref std std-term">host</em></a>
+machine</li>
+<li>The emulated machine is called the <a class="reference internal" href="../glossary.html#term-guest"><em class="xref std std-term">guest</em></a> machine</li>
+<li>The software that interfaces with the host operating system is called a
+<a class="reference internal" href="../glossary.html#term-virtual-machine-manager"><em class="xref std std-term">virtual machine manager</em></a> (<a class="reference internal" href="../glossary.html#term-vmm"><em class="xref std std-term">VMM</em></a>, or <a class="reference internal" href="../glossary.html#term-hypervisor"><em class="xref std std-term">Hypervisor</em></a>)</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="host-requirements">
+<h2>Host requirements<a class="headerlink" href="#host-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Most modern PC systems can run <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> software. However, not all computers
+can emulate 64-bit multi-core systems. The best platforms to use must have
+hardware support to improve performance:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Intel processors with VT-x extensions</li>
+<li>AMD processors with AMD-V extensions</li>
+</ul>
+</div></blockquote>
+<p>They also need a fair amount of memory and a big hard disk:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Lots of memory (2GB or more per running machine)</li>
+<li>Reasonable hard disk (10-50GB or more per running machine)</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><a class="reference external" href="http://www.vmware.com/">VMware</a> has a nice tool that can check a Windows system to see if it has
+the required extensions.</p>
+<ul class="last simple">
+<li><a class="reference download internal" href="../_downloads/VMware-guest64check-5.5.0-18463.exe"><tt class="xref download docutils literal"><span class="pre">VMware-guest64check-5.5.0-18463.exe</span></tt></a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="virtual-machine-solutions">
+<h2>Virtual Machine solutions<a class="headerlink" href="#virtual-machine-solutions" title="Permalink to this headline">¶</a></h2>
+<p>There are several sources for <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> packages that all work well:</p>
+<div class="section" id="native-emulators-pc-on-pc">
+<h3>Native emulators (PC on PC)<a class="headerlink" href="#native-emulators-pc-on-pc" title="Permalink to this headline">¶</a></h3>
+<p>All of these products emulate standard PC hardware and run on PC systems
+(Windows/Linux/Mac):</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference external" href="http://www.vmware.com/">VMware</a></p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://www.vmware.com/products/workstation/">Workstation</a> on PC systems</li>
+<li><a class="reference external" href="https://my.vmware.com/web/vmware/free#desktop_end_user_computing/vmware_player/6_0">Player</a> on PC systems</li>
+<li><a class="reference external" href="https://www.vmware.com/products/fusion/">Fusion</a> on Mac systems</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>ACC has a license for all <a class="reference external" href="http://www.vmware.com/">VMware</a> products. These are available to students
+as well.</p>
+<ul class="last simple">
+<li><a class="reference external" href="https://www.virtualbox.org/">VirtualBox</a> - free for all platforms</li>
+<li><a class="reference external" href="http://www.parallels.com/">Parallels</a> on Mac systems</li>
+<li><a href="#id2"><span class="problematic" id="id3">XEN_</span></a> - for Linux systems</li>
+<li><a class="reference external" href="http://www.microsoft.com/en-us/download/details.aspx?id=4580">VirtualPC</a> - limited to running MS products</li>
+</ul>
+</div>
+<p>All of these products run on host machines with standard operating systems
+installed. There are products that can run on systems with no Operating system.</p>
+</div>
+<div class="section" id="pure-emulators">
+<h3>Pure emulators<a class="headerlink" href="#pure-emulators" title="Permalink to this headline">¶</a></h3>
+<p>These products can emulate PC or other hardware.</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://wiki.qemu.org/Main_Page">Qemu</a> - emulates x86, Arm, Mips, Sparc</li>
+<li><a class="reference external" href="http://bochs.sourceforge.net/">Bochs</a> - emulates x86 (32/64 bit)</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="configuring-a-vm">
+<h2>Configuring a VM<a class="headerlink" href="#configuring-a-vm" title="Permalink to this headline">¶</a></h2>
+<p>When you set up a <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> it is something like wandering the aisles at Fry&#8217;s
+and picking out comonents you want to add. Most <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> software will let
+you access the physical hardware on the host. This includes things like USB
+devices, and CD/DVD hardware. Do not add any hardware you do not need!</p>
+<p>All disk drives end up living in a file stored on the host. This file can be
+set up to grow as more data is added to the guest system. This file can get
+big!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There are tools available that let you access a virtual disk file and make
+changes or read the files. A bit of googling should turn them up if needed.</p>
+</div>
+<p>A typical setup that I use for class work looks like this:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Processor - 64 bit Pentium (1-2 cores)</p>
+</li>
+<li><dl class="first docutils">
+<dt>Memory - depends on the OS</dt>
+<dd><ul class="first last simple">
+<li>512MB - 1GB for Linux</li>
+<li>2GB for Windows (max depends on available memory on host)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">Floppy - really?</p>
+</li>
+<li><dl class="first docutils">
+<dt>Hard disk - depends on the OS</dt>
+<dd><ul class="first last simple">
+<li>8-30GB is enough for OS and user data</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">CD/DVD - usually not needed</p>
+</li>
+<li><dl class="first docutils">
+<dt>Video - Simple video is fine for server systems</dt>
+<dd><ul class="first last simple">
+<li>HIgher performance video is available for GUI systems</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Network Adapter</dt>
+<dd><ul class="first last simple">
+<li>Bridged - your VM will get an IP address from a DHCP server (router)</li>
+<li>Host only - only the host can access the VM (no Internet)</li>
+<li>NAT - the VM shares the host network connection (used at ACC)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="when-to-use-vm-systems">
+<h2>When to use VM systems<a class="headerlink" href="#when-to-use-vm-systems" title="Permalink to this headline">¶</a></h2>
+<p>I use a virtual machine in many situations:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Isolate the system and software from the host machine</p>
+</li>
+<li><p class="first">Testing server configurations</p>
+</li>
+<li><p class="first">Experimenting with new operating systems (Windows 8)</p>
+</li>
+<li><p class="first">Learning new applications/Languages</p>
+</li>
+<li><p class="first">Managing software development process</p>
+</li>
+<li><dl class="first docutils">
+<dt>learning how to manage remote machines</dt>
+<dd><ul class="first last simple">
+<li>The setup I use looks/feels exactly like my <a class="reference external" href="http://www.rackspace.com/">Rackspace</a> <a href="#id4"><span class="problematic" id="id5">VPS_</span></a> setup</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>In all of these situations, a new machine can be created and used as needed.
+When you are finished with the project, you can delete the entire machine
+(usually just a single directory) of move it to  backup storage for use later.</p>
+</div>
+<div class="section" id="planning-on-using-vms-in-class">
+<h2>Planning on using VMs in class?<a class="headerlink" href="#planning-on-using-vms-in-class" title="Permalink to this headline">¶</a></h2>
+<p>There are a few things you need to consider:</p>
+<div class="section" id="creating-the-image">
+<h3>Creating the image<a class="headerlink" href="#creating-the-image" title="Permalink to this headline">¶</a></h3>
+<p>I build a standard image (usually a server version of Ubuntu Linux) and set up
+a user account for me, and for the lab techs so they can access the machine if
+needed. I install all needed software on the image, then that image is included
+in the master image used to set up lab machines at the start of each term.</p>
+<p>I create one student account and set up a password that all students will use
+to access the machine. (See below)</p>
+</div>
+<div class="section" id="licensing">
+<h3>Licensing<a class="headerlink" href="#licensing" title="Permalink to this headline">¶</a></h3>
+<p>Setting up a VM image leads to license issues:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Linux guest - no problems here</li>
+<li>Windows guest - the image may be copied, breaking the license</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="where-will-student-data-live">
+<h3>Where will student data live?<a class="headerlink" href="#where-will-student-data-live" title="Permalink to this headline">¶</a></h3>
+<p>In some setups, student data ends up in the image file!</p>
+<blockquote>
+<div><ul class="simple">
+<li>This locks the student to a particular machine</li>
+<li>Will not work in the Open Labs or at other campuses</li>
+</ul>
+</div></blockquote>
+<div class="section" id="we-have-a-solution">
+<h4>We have a solution<a class="headerlink" href="#we-have-a-solution" title="Permalink to this headline">¶</a></h4>
+<p>Thanks to some hard work by Alison at RGC and James at NRG, we have figured out
+how to map the students H drive into a directory on the <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> when they
+start the program. This will allow us to keep the lab images clean and will
+allow students to run on any machine with the <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> software installed,
+and the class image available.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Map a directory on the guest to the students H drive</li>
+<li>Teach the students to do their work in the mapped directory, and run in
+the guest</li>
+</ul>
+</div></blockquote>
+<p>Check with the lab techs to see how this is set up</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/ACClogo.png" alt="Logo"/>
+        </a></p><div class="sphinxlocaltoc">
+    <h3><a href="../index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Virtual Machine Basics</a><ul>
+<li><a class="reference internal" href="#the-emulated-computer">The emulated computer</a><ul>
+<li><a class="reference internal" href="#terminology">Terminology</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#host-requirements">Host requirements</a></li>
+<li><a class="reference internal" href="#virtual-machine-solutions">Virtual Machine solutions</a><ul>
+<li><a class="reference internal" href="#native-emulators-pc-on-pc">Native emulators (PC on PC)</a></li>
+<li><a class="reference internal" href="#pure-emulators">Pure emulators</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuring-a-vm">Configuring a VM</a></li>
+<li><a class="reference internal" href="#when-to-use-vm-systems">When to use VM systems</a></li>
+<li><a class="reference internal" href="#planning-on-using-vms-in-class">Planning on using VMs in class?</a><ul>
+<li><a class="reference internal" href="#creating-the-image">Creating the image</a></li>
+<li><a class="reference internal" href="#licensing">Licensing</a></li>
+<li><a class="reference internal" href="#where-will-student-data-live">Where will student data live?</a><ul>
+<li><a class="reference internal" href="#we-have-a-solution">We have a solution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="../index.html"
+                          title="Previous page">&larr; Introduction to Virtual Machines</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="Vagrant.html"
+                          title="Next page">&rarr; Software development with Vagrant</a></p>
+  </div>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/docs/Introduction.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Vagrant.html" title="Software development with Vagrant"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Introduction to Virtual Machines"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">VMdemo</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2014, Roie R. Black.
+      Last updated on Jan 06, 2014.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

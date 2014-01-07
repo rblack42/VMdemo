@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Software development with Vagrant &mdash; Introduction to Virtual Machines</title>
+    
+    <link rel="stylesheet" href="../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../_static/cloud.js"></script>
+    <link rel="top" title="Introduction to Virtual Machines" href="../index.html" />
+    <link rel="next" title="Glossary" href="../glossary.html" />
+    <link rel="prev" title="Virtual Machine Basics" href="Introduction.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../glossary.html" title="Glossary"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Introduction.html" title="Virtual Machine Basics"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">VMdemo</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="software-development-with-vagrant">
+<h1>Software development with Vagrant<a class="headerlink" href="#software-development-with-vagrant" title="Permalink to this headline">¶</a></h1>
+<p>There is a neat new tool available for managing <a class="reference internal" href="../glossary.html#term-virtual-machines"><em class="xref std std-term">virtual machines</em></a>:
+<a class="reference external" href="http://www.vagrantup.com/">Vagrant</a>!</p>
+<p><a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> is a tool, written in Ruby, that creates a new <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> and
+&#8220;provisions&#8221; that machine according to a set of files you set up on your host
+machine. I currently use <a class="reference external" href="http://puppetlabs.com/">Puppet</a> as the provisioning tool in my Vagrant
+projects.</p>
+<p><a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> uses specially prepared <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> images, called &#8220;boxes&#8221;, with
+provisioning tools installed, and a set of standard configuration settings that
+let the machine wake up with minimal fuss. Users can then &#8220;clone&#8221; a copy of
+this basic configuration and provision that new image as needed. Creating a
+clone is fast enough that some users spin up a new machine for testing as part
+of a build procedure, then destroy the image when testing is done!</p>
+<p>There are many box images available on the Internet, or you can build your own.
+These images can be downloaded automatically as we shall see.</p>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>We can demonstrate this tool by installing <a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> on a test system.</p>
+<div class="section" id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> needs a <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a> system to manage. Currently the tool works with
+<a class="reference external" href="https://www.virtualbox.org/">VirtualBox</a>, and there is a commercial version that works on <a class="reference external" href="http://www.vmware.com/">VMware</a>. We will
+use the free version.</p>
+<div class="section" id="install-virtualbox">
+<h4>Install VirtualBox<a class="headerlink" href="#install-virtualbox" title="Permalink to this headline">¶</a></h4>
+<p>Download the Windows installer for <a class="reference external" href="https://www.virtualbox.org/">VirtualBox</a>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://download.virtualbox.org/virtualbox/4.3.6/VirtualBox-4.3.6-91406-Win.exe">VirtualBox-4.3.6-91406-Win.exe</a></li>
+</ul>
+</div></blockquote>
+<p>Run this program to install <a class="reference external" href="https://www.virtualbox.org/">VirtualBox</a> on your system.</p>
+</div>
+<div class="section" id="install-vagrant">
+<h4>Install Vagrant<a class="headerlink" href="#install-vagrant" title="Permalink to this headline">¶</a></h4>
+<p>Download the Vagrant Windows installer:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://dl.bintray.com/mitchellh/vagrant/Vagrant_1.4.2.msi">Vagrant_1.4.2.msi</a></li>
+</ul>
+</div></blockquote>
+<p>This package installs <a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> and the ruby system needed to run the program.
+This will not conflict with any version of Ruby already installed on the
+system.</p>
+</div>
+</div>
+</div>
+<div class="section" id="testing-the-setup">
+<h2>Testing the setup<a class="headerlink" href="#testing-the-setup" title="Permalink to this headline">¶</a></h2>
+<p>This step is cool! Assuming you are connected to the Internet, open up a
+command prompt and do the following:</p>
+<div class="highlight-text"><div class="highlight"><pre>mkdir VMtest
+cd VMtest
+vagrant init precise32 http://files.vagrantup.com/precise32.box
+vagrant up
+</pre></div>
+</div>
+<p>When this sequence completes, you will have a running Ubuntu 12.04 32-bit
+server running on your machine. There will be nothing indicating that this
+machine is running, but it is. You can confirm this by running this command:</p>
+<p>On systems with an SSH client installed (like lInux and Mac), you can access
+the machine using this:</p>
+<div class="highlight-text"><div class="highlight"><pre>vagrant ssh
+</pre></div>
+</div>
+<p>Unfortunately, PC systems do not come with an SSH client, so  you need to do a
+bit of configuration to get things running:</p>
+<div class="section" id="install-putty-tools">
+<h3>Install Putty tools<a class="headerlink" href="#install-putty-tools" title="Permalink to this headline">¶</a></h3>
+<p>We need to install a few tools from the <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Putty</a> collection. These are all simple
+executables that can be dropped into any directory on your system PATH.</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" href="../_downloads/putty.exe"><tt class="xref download docutils literal"><span class="pre">putty.exe</span></tt></a></li>
+<li><a class="reference download internal" href="../_downloads/puttygen.exe"><tt class="xref download docutils literal"><span class="pre">puttygen.exe</span></tt></a></li>
+</ul>
+</div></blockquote>
+<p>Vagrant uses an SSH connection for communication. We need to set up the private
+key on the host machine so <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Putty</a> can access the <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a>. To do this, we
+need to convert the key created by Vagrant into a form acceptable by Putty.</p>
+<p>Start up the <strong class="program">puttygen`</strong> program and select <em class="menuselection">Load</em> to
+load the <tt class="docutils literal"><span class="pre">insecure_privatekey</span></tt> file. This file can be found in your home
+directory (Something like <tt class="docutils literal"><span class="pre">C:\Users\username\.vagrant.d\isecure_private_key</span></tt>)
+Make sure you select <em class="menuselection">All Files</em> in the file type drop-down in
+the open dialog window that opens.</p>
+<img alt="../_images/VagrantKey1.png" class="align-center" src="../_images/VagrantKey1.png" />
+<p>Once the file has been loaded, you will see this:</p>
+<img alt="../_images/VagrantKey2.png" class="align-center" src="../_images/VagrantKey2.png" />
+<p>Save the file with no passphrase</p>
+<img alt="../_images/VagrantKey3.png" class="align-center" src="../_images/VagrantKey3.png" />
+<p>I use <tt class="docutils literal"><span class="pre">vagrant.ppk</span></tt> for the file name.  I keep this file in the same directory where the original insecure key was found.</p>
+<div class="section" id="start-putty">
+<h4>Start Putty<a class="headerlink" href="#start-putty" title="Permalink to this headline">¶</a></h4>
+<p>Now run putty.</p>
+<img alt="../_images/putty1.png" class="align-center" src="../_images/putty1.png" />
+<p>We need to set in the IP address for the <a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a>. Vagrant sets up the
+network so you can access port 2222 on the local host (127.0.0.1). Enter these
+values in this window.</p>
+<p>Next, select <em class="menuselection">Connection ‣ SSH ‣ Auth</em></p>
+<img alt="../_images/putty2.png" class="align-center" src="../_images/putty2.png" />
+<p>Here, we need to tell <strong class="program">putty</strong> to use the private key. Browse to this
+location and open the new file created earlier.</p>
+<p>We will need to enter a user name so that Putty can log into the system.
+Navigate to <em class="menuselection">Connection ‣ Data</em>.</p>
+<img alt="../_images/putty3.png" class="align-center" src="../_images/putty3.png" />
+<p>The default user name is <tt class="docutils literal"><span class="pre">vagrant</span></tt>. (BTW, the user&#8217;s password is also
+vagrant, but we will not need that much!)</p>
+<p>Finally, my poor eyes prefer black text on a white background, so I navigate to
+<em class="menuselection">Window -&gt; Colors</em></p>
+<img alt="../_images/putty4.png" class="align-center" src="../_images/putty4.png" />
+<p>Click on the <em class="menuselection">use system colors</em> check-box on this screen:</p>
+<p>Go back to the <em class="menuselection">Session</em> tab and save these settings as
+something like &#8220;vagrant&#8221;. Then, you can load these setting the next time you
+run <strong class="program">putty</strong>. Then select <em class="menuselection">Open</em>.</p>
+<p>The first time you connect with this machine, you will see this window:</p>
+<img alt="../_images/putty5.png" class="align-center" src="../_images/putty5.png" />
+<p>You can trust this connection, so click on <em class="menuselection">Yes</em>. If all goes
+well, here is the console where we can use the new machine:</p>
+<img alt="../_images/putty6.png" class="align-center" src="../_images/putty6.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">I ran two commands to verify that we are running as user <tt class="docutils literal"><span class="pre">vagrant</span></tt> and
+are now working in the default user&#8217;s home directory.</p>
+</div>
+<p>We can see the host directory by doing this:</p>
+<img alt="../_images/putty7.png" class="align-center" src="../_images/putty7.png" />
+<p>Here, we see that the <tt class="docutils literal"><span class="pre">/vagrant</span></tt> directory has been mapped to the host directory where we ran the vagrant command. This lets us easily move files between the guest and the host, which is pretty handy</p>
+</div>
+</div>
+</div>
+<div class="section" id="provisioning-the-guest">
+<h2>Provisioning the guest<a class="headerlink" href="#provisioning-the-guest" title="Permalink to this headline">¶</a></h2>
+<p>That much was pretty neat, but there is more to <a class="reference external" href="http://www.vagrantup.com/">Vagrant</a>. We will demonstrate
+using <a class="reference external" href="http://puppetlabs.com/">Puppet</a> to set up the machine the way I need it set up for my COSC2425
+class.</p>
+<p>Puppet is a tool for managing the exact configuration of a machine. It can do
+most tasks a system administrator needs to do: create users, manage files and
+their contents, install programs, and much more.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This tool can be addictive. Since starting with it, I have used it
+extensively to manage my Linux and Mac systems. Sadly, Windows is not well
+supported (yet!)</p>
+</div>
+<p>We are not going to go into Puppet in detail here. This is intended to
+demonstrate how easy it can be to set up a new system, especially one inside a
+<a class="reference internal" href="../glossary.html#term-vm"><em class="xref std std-term">VM</em></a>.</p>
+<div class="section" id="puppet-management-files">
+<h3>Puppet management files<a class="headerlink" href="#puppet-management-files" title="Permalink to this headline">¶</a></h3>
+<p>Puppet uses a set of files located in standard places to control how it sets up
+a machine. This tool implements something called &#8220;configuration as software&#8221;.
+We are going to describe how the system should look, and let <a class="reference external" href="http://puppetlabs.com/">Puppet</a> make that
+happen. We do not tell Puppet how to do any of this configuration.</p>
+<p>First, create this directory structure (omit the .pp files for now):</p>
+<div class="highlight-text"><div class="highlight"><pre>puppet
+|
++- manifests
+|   |
+|   +- site.pp
+|
++- modules
+    |
+    +-vim
+    |   |
+    |   +-manifests
+    |       |
+    |       +-init.pp
+    |
+    +-build
+    |   |
+    |   +-manifests
+    |       |
+    |       +-init.pp
+    |
+    +-nasm
+        |
+        +-manifests
+            |
+            +-init.pp
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-new-vagrantfile">
+<h3>Create a new VagrantFile<a class="headerlink" href="#create-a-new-vagrantfile" title="Permalink to this headline">¶</a></h3>
+<p>The default <tt class="docutils literal"><span class="pre">VagrantFIle</span></tt> created by the <a class="reference external" href="http://www.vagrantup.com/">Vagrant</a> tool is full of comments
+describing the various entries. I like to prune this to just the essentials.
+Here is the file needed to configure this machine for mu COSC2425 class:</p>
+<div class="highlight-python"><pre># -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "precise32"
+  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+   
+  config.vm.provision :puppet do |puppet|
+    puppet.manifests_path = "puppet/manifests"
+    puppet.manifest_file  = "site.pp"
+    puppet.module_path = "puppet/modules"
+  end
+end
+</pre>
+</div>
+<p>Here is the initial <tt class="docutils literal"><span class="pre">site.pp</span></tt> file that controls the entire setup:</p>
+<div class="highlight-python"><pre>include vim
+</pre>
+</div>
+<p>This file will load additional &#8220;modules&#8221; which describe the setup for a single package. As an example, here is the file that installs <strong class="program">vim</strong> on the system:</p>
+<div class="highlight-python"><pre>class vim {
+
+    package { "vim":
+        ensure =&gt; installed,
+    }
+
+    file { "/home/vagrant/.vimrc":
+        content =&gt; template("vim/vimrc.erb"),
+    }
+}
+
+</pre>
+</div>
+<p>This file will use a template to create a configuration file for
+<strong class="program">vim</strong>. This configuration file is installed in the user&#8217;s hoe
+directory as <tt class="docutils literal"><span class="pre">.vimrc</span></tt>. Here is the template, located in
+<tt class="docutils literal"><span class="pre">puppet/modules/vim/templates/vimrc.erb</span></tt></p>
+<div class="highlight-python"><pre>set tabstop=4
+set shiftwidth=4
+set expandtab
+set nobackup
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/ACClogo.png" alt="Logo"/>
+        </a></p><div class="sphinxlocaltoc">
+    <h3><a href="../index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Software development with Vagrant</a><ul>
+<li><a class="reference internal" href="#getting-started">Getting started</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li><a class="reference internal" href="#install-virtualbox">Install VirtualBox</a></li>
+<li><a class="reference internal" href="#install-vagrant">Install Vagrant</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-the-setup">Testing the setup</a><ul>
+<li><a class="reference internal" href="#install-putty-tools">Install Putty tools</a><ul>
+<li><a class="reference internal" href="#start-putty">Start Putty</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#provisioning-the-guest">Provisioning the guest</a><ul>
+<li><a class="reference internal" href="#puppet-management-files">Puppet management files</a></li>
+<li><a class="reference internal" href="#create-a-new-vagrantfile">Create a new VagrantFile</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="Introduction.html"
+                          title="Previous page">&larr; Virtual Machine Basics</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="../glossary.html"
+                          title="Next page">&rarr; Glossary</a></p>
+  </div>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/docs/Vagrant.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../glossary.html" title="Glossary"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Introduction.html" title="Virtual Machine Basics"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">VMdemo</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2014, Roie R. Black.
+      Last updated on Jan 07, 2014.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

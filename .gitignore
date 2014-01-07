@@ -1,0 +1,10 @@
+# Mac stuff
+.DS_Store
+
+# Stray vim edit buffers
+*.swp
+
+# python artifacts
+*.pyc
+
+
